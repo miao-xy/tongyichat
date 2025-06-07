@@ -1,8 +1,8 @@
 import streamlit as st
-form openai import OpenAI
+from openai import OpenAI
 
 st.set_page_config(
-page_title="三亚学院智能助手",
+    page_title="三亚学院智能助手",
     page_icon="🤖",
     layout="centered",
 )
@@ -31,20 +31,25 @@ st.markdown(
         color: #6b7280;
         margin-bottom: 2rem;
     }
-</style>""", unsafe_allow_html=True,
+</style>""",
+    unsafe_allow_html=True,
 )
+
+
 def create_openai_client():
     return OpenAI(
         api_key="sk-f01ff4aabe8443e39c8b2a52a523ed2d",  # 设置API密钥
         base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",  # 指向阿里云通义千问的API地址
-        timeout=180.0  # 设置超时时间为180秒，防止长时间等待响应
+        timeout=180.0,  # 设置超时时间为180秒，防止长时间等待响应
     )
+
+
 if "messages" not in st.session_state:
     # 如果会话中没有messages，则初始化一个包含助手欢迎语的列表
     st.session_state.messages = [
         {
             "role": "assistant",
-            "content": "你好！我是三亚学院的智能助手，基于阿里云通义千问大模型。请问有什么我可以帮助你的吗？"
+            "content": "你好！我是三亚学院的智能助手，基于阿里云通义千问大模型。请问有什么我可以帮助你的吗？",
         }
     ]
 
@@ -68,7 +73,7 @@ if prompt := st.chat_input("在这里输入你的问题..."):
                     messages=[
                         {
                             "role": "system",
-                            "content": "你是三亚学院的智能助手，表现得友好、专业且乐于助人。"
+                            "content": "你是三亚学院的智能助手，表现得友好、专业且乐于助人。",
                         },
                         *{
                             {"role": m["role"], "content": m["content"]}
@@ -85,4 +90,3 @@ if prompt := st.chat_input("在这里输入你的问题..."):
                 )
             except Exception as e:
                 st.error(f"抱歉，发生了错误: {str(e)}")
-
